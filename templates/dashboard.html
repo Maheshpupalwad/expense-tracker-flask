@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>Add Expense</h2>
+
+<form method="POST">
+
+<input name="title" placeholder="Expense Title" required>
+
+<select name="category">
+<option>Food</option>
+<option>Travel</option>
+<option>Shopping</option>
+<option>Bills</option>
+<option>Entertainment</option>
+</select>
+
+<input name="amount" type="number" placeholder="Amount" required>
+<input name="date" type="date" required>
+
+<button>Add Expense</button>
+
+</form>
+
+<h3>Total Expenses: ₹{{total}}</h3>
+
+<h3>Expense List</h3>
+
+<table>
+
+<tr>
+<th>Title</th>
+<th>Category</th>
+<th>Amount</th>
+<th>Date</th>
+<th>Delete</th>
+</tr>
+
+{% for d in data %}
+
+<tr>
+<td>{{d[1]}}</td>
+<td>{{d[2]}}</td>
+<td>{{d[3]}}</td>
+<td>{{d[4]}}</td>
+<td><a href="/delete/{{d[0]}}">Delete</a></td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+<canvas id="chart"></canvas>
+
+<a href="/logout">Logout</a>
+
+</div>
+
+<script>
+
+let labels = [{% for d in data %}"{{d[1]}}",{% endfor %}]
+let amounts = [{% for d in data %}{{d[3]}},{% endfor %}]
+
+new Chart(document.getElementById("chart"),{
+type:"bar",
+data:{
+labels:labels,
+datasets:[{
+label:"Expenses",
+data:amounts
+}]
+}
+})
+
+</script>
+
+</body>
+</html>
